@@ -18,7 +18,7 @@ namespace Spice.Areas.Admin.Controllers
             _db = db;
         }
 
-        //GET
+        //GET List All
         public async Task<IActionResult> Index()
         {
             return View(await _db.Category.ToListAsync());
@@ -29,6 +29,7 @@ namespace Spice.Areas.Admin.Controllers
         {
             return View();
         }
+
         //Post Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -120,6 +121,5 @@ namespace Spice.Areas.Admin.Controllers
             return View(category);
         }
 
-        //POST DETAILS
     }
 }
