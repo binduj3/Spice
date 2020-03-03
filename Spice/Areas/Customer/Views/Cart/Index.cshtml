@@ -1,0 +1,118 @@
+﻿@model OrderDetailsCart
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post">
+    @if (Model.listCart.Any())
+    {
+        <br />
+        <input hidden asp-for=" @Model.listCart[0].ApplicationUserId" />
+        <div class=" backgroundWhiteBorder">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header text-light bg-dark ml-0 row ">
+                        <div class="col-6">
+                            <i class="fas fa-shopping-cart"></i> &nbsp; Shopping Cart
+                        </div>
+                        <div class="col-6 text-right">
+                            <a asp-action="Index" asp-controller="Home" asp-area="Customer" class="btn btn-outline-info btn-sm">Continue Shopping</a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @foreach (var item in Model.listCart)
+                        {
+                            <div class="row">
+                                <div class="d-none d-lg-block col-lg-2 text-center py-2">
+                                    <img src="@item.MenuItem.Image" class="rounded" width="120" height="120" />
+                                </div>
+                                <div class="col-12 text-sm-center col-lg-5 text-lg-left">
+                                    <h4><small>  @item.MenuItem.Description</small></h4>
+                                </div>
+                                <div class="col-12 text-sm-center col-lg-5 text-lg-right row">
+                                    <div class="col-4 text-md-right" style="padding-top:5px;">
+                                        <h6><strong>$@item.MenuItem.Price</strong><span class="text-muted">X</span>@item.Count</h6>
+                                    </div>
+                                    <div class="col-6 col-sm-4 col-lg-6">
+                                        <div class="float-right mx-1">
+                                            <button type="submit" class="btn btn-primary" asp-action="Plus" asp-route-cartId="@item.Id">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="float-right mx-1">
+                                            <button type="submit" class="btn btn-danger" asp-action="Minus" asp-route-cartId="@item.Id">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-2 col-sm-4 col-lg-2 text-right">
+                                        <button type="submit" class="btn btn-outline-danger" asp-action="Remove" asp-route-cartId="@item.Id">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                        }
+                        <div class="row">
+                            <div class="col-12 col-md-5">
+                                <div class="row">
+                                    <div class="col-7">
+                                        <input asp-for="@Model.OrderHeader.CouponCode" class="form-control" id="txtCouponCode" placeholder="Coupon Code" />
+                                    </div>
+                                    <div class="col-5 ">
+                                        <button type="submit" class="btn btn-outline-success form-control btn-sm" asp-action="AddCoupoun" id="CouponApplyBtn">
+                                            Apply
+                                        </button>
+                                        <button type="submit" class="btn btn-outline-danger form-control btn-sm" asp-action="RemoveCoupon" id="CouponRemovebtn" style="display:none;">
+                                            Remove
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 offset-md-1 col-lg-4 offset-lg-3 pr-4">
+                                <ul class="list-group">
+                                    <li class="list-group-item d-flex bg-light justify-content-between">
+                                        <span class="text-info">Total(CAD)</span>
+                                        <strong class="text-info">$<span class="text-info">@Model.OrderHeader.OrderTotal</span></strong>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="col-12  col-lg-4 offset-lg-8 col-md-6 offset-md-6 ">
+                            <a asp-action="Summary" asp-area="Customer" asp-controller="Cart" class="btn btn-success form-control">Summary</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="backgroundWhiteBorder">
+            No items added to shoppig cart...
+        </div>
+    }
+</form>
+
+@section Scripts{ 
+
+<script>
+    $(function () {
+        var CouponCode = $('#txtCouponCode').val();
+
+        if (CouponCode.length > 0) {
+            document.getElementById('CouponApplyBtn').style.display = 'none';
+            document.getElementById('CouponRemovebtn').style.display = '';
+        }
+        else{
+             document.getElementById('CouponApplyBtn').style.display = '';
+            document.getElementById('CouponRemovebtn').style.display = 'none';
+        }
+    });
+</script>
+}
+
