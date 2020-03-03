@@ -1,4 +1,6 @@
-﻿@using Spice.Utility
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using Spice.Utility
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,9 +16,9 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="Customer" asp-controller="Home" asp-action="Index">
-                    <img src="~/Images/mild.jpg" height="50px" width="50px"/>
-                    <img src="~/Images/spicy.jpg" height="50px" width="50px"/>
-                    <img src="~/Images/verySpicy.jpg"   height="50px" width="50px"/>
+                    <img src="~/Images/mild.jpg" height="50px" width="50px" />
+                    <img src="~/Images/spicy.jpg" height="50px" width="50px" />
+                    <img src="~/Images/verySpicy.jpg" height="50px" width="50px" />
                     <label class="text-info" style="cursor:pointer;">Spice</label>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -27,23 +29,38 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         @* Boostrap for dropdown*@
-                        @if(User.IsInRole(SD.ManagerUser)){
-                        <li class="nav-item dropdown text-white-50">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                ContentManagement
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" asp-action="Index" asp-controller="Category" asp-area="Admin">Category</a>
-                                <a class="dropdown-item" asp-action="Index" asp-controller="SubCategory" asp-area="Admin">Sub Category</a>
-                                <a class="dropdown-item" asp-action="Index" asp-controller="MenuItem" asp-area="Admin">Menu Item</a>
-                                <a class="dropdown-item" asp-action="Index" asp-controller="Coupon" asp-area="Admin">Coupons</a>
-                                <a class="dropdown-item" asp-action="Index" asp-controller="User" asp-area="Admin">Users</a>
-                            </div>
-                        </li>
+                        @if (User.IsInRole(SD.ManagerUser))
+                        {
+                            <li class="nav-item dropdown text-white-50">
+                                <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    ContentManagement
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" asp-action="Index" asp-controller="Category" asp-area="Admin">Category</a>
+                                    <a class="dropdown-item" asp-action="Index" asp-controller="SubCategory" asp-area="Admin">Sub Category</a>
+                                    <a class="dropdown-item" asp-action="Index" asp-controller="MenuItem" asp-area="Admin">Menu Item</a>
+                                    <a class="dropdown-item" asp-action="Index" asp-controller="Coupon" asp-area="Admin">Coupons</a>
+                                    <a class="dropdown-item" asp-action="Index" asp-controller="User" asp-area="Admin">Users</a>
+                                </div>
+                            </li>
                         }
-                        <li style="color:white">
-                            <a href="#" class="nav-link"><i class="fas fa-shopping-cart"></i>&nbsp;(0)</a>
-                        </li>
+                        @{ var session = HttpContextAccessor.HttpContext.Session.GetInt32("ssCartCount");
+                                session = (session != null) ? session : 0;
+
+                                <li style="color:white">
+                                    <a href="#" class="nav-link"><i class="fas fa-shopping-cart">&nbsp;(@session)</i></a>
+                                </li>
+                        
+                            @*else
+                            {
+
+                                <li style="color:white">
+                                    <a href="#" class="nav-link"><i class="fas fa-shopping-cart">&nbsp;@session</i></a>
+                                </li>
+                            }*@
+
+                        }
+
                     </ul>
                 </div>
             </div>

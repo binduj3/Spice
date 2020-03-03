@@ -37,6 +37,9 @@ namespace Spice
                 .AddDefaultTokenProviders()
                .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddSingleton<IEmailSender, EmailSender>();
+            services.Configure<EmailOptions>(Configuration);
+          
             //.AddDefaultUI()
 
             services.AddAuthentication().AddFacebook(facebookOptions =>
@@ -47,6 +50,14 @@ namespace Spice
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddControllersWithViews();
             services.AddRazorPages().AddRazorRuntimeCompilation();
+
+            services.AddSession(options =>
+            {
+                options.Cookie.IsEssential = true;
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+
+            });
 
             services.ConfigureApplicationCookie(options =>
 
@@ -76,7 +87,7 @@ namespace Spice
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
 

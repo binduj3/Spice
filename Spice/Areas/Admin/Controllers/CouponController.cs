@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,6 +34,18 @@ namespace Spice.Areas.Admin.Controllers
         //Get Create
         public IActionResult Create()
         {
+            ////var PayPeriod = new List<DateTime>();
+            //Collection<DateTime> PayPeriod = new Collection<DateTime>();
+            //DateTime d = new DateTime();
+            //d = Convert.ToDateTime("01/09/2012");
+
+            //while (d <= Convert.ToDateTime("01/06/2013"))
+            //{
+
+            //    PayPeriod.Insert(new ListItem(d.ToString("MM/dd/yyyy"), d.ToString("MM/dd/yyyy")));
+
+            //    d = d.Date.AddDays(14);
+            //}
             return View();
         }
 
